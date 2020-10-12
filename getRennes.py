@@ -27,6 +27,6 @@ for vlille in vlilles:
         'name':vlille['fields']['nom'],
         'ville':'renne',
         'localisation':vlille['fields']['coordonnees'],
-        'tpe':vlille['fields']['type']
+        'tpe':False
     }
     records.insert_one(new_station)

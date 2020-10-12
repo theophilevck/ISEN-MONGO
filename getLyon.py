@@ -28,7 +28,7 @@ for vlille in vlilles:
     new_station={
         'name':vlille['name'],
         'ville':vlille['contractName'],
-        'localisation':[vlille['position']['latitude'],vlille['position']['latitude']],
+        'localisation':[vlille['position']],
         'tpe':vlille['banking']
     }
     records.insert_one(new_station)
