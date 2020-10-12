@@ -1,6 +1,13 @@
 import requests
 import json
+import pymongo
 from pprint import pprint
+from pymongo import MongoClient
+
+client= MongoClient("mongodb+srv://dbUser:admin@cluster0.tpotb.mongodb.net/mongo_Test?retryWrites=true&w=majority")
+db=client.get_database('mongo_Test')
+records=db.mongo_record
+
 
 def get_vlyon():
     key="2f3f00af9ce4e0959c3611b330a7be5f1af2b436"
@@ -18,4 +25,10 @@ def get_vlyon():
 vlilles = get_vlyon()
 
 for vlille in vlilles:
-    pprint(vlille)
+    new_station={
+        'name':vlille['name'],
+        'ville':vlille['contractName'],
+        'localisation':[vlille['position']['latitude'],vlille['position']['latitude']],
+        'tpe':vlille['banking']
+    }
+    records.insert_one(new_station)
