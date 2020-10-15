@@ -22,11 +22,20 @@ def get_vrennes():
 
 vlilles = get_vrennes()
 
-for vlille in vlilles:
-    new_station={
-        'name':vlille['fields']['nom'],
-        'ville':'renne',
-        'localisation':vlille['fields']['coordonnees'],
-        'tpe':False
+vlilles_to_insert =[
+ {
+        'name': elem.get('fields', {}).get('nom', '').title(),
+        'geometry': elem.get('geometry'),
+        'size': elem.get('fields', {}).get('nombrevelosdisponibles') + elem.get('fields', {}).get('nombreemplacementsdisponibles'),
+        'source': {
+            'dataset': 'rennes',
+            'id_ext': elem.get('fields', {}).get('idstation')
+        },
+        'tpe': 'unknown'
     }
-    records.insert_one(new_station)
+    for elem in vlilles
+]
+
+for vlille in vlilles_to_insert:
+    records.insert_one(vlille)
+

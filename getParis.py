@@ -22,11 +22,20 @@ def get_vparis():
 
 vlilles = get_vparis()
 
-for vlille in vlilles:
-    new_station={
-        'name':vlille['fields']['name'],
-        'ville':vlille['fields']['nom_arrondissement_communes'],
-        'localisation':vlille['fields']['coordonnees_geo'],
-        'tpe':False
+
+vlilles_to_insert =[
+ {
+        'name': elem.get('fields', {}).get('name', '').title(),
+        'geometry': elem.get('geometry'),
+        'size': elem.get('fields', {}).get('numbikesavailable') + elem.get('fields', {}).get('numdocksavailable'),
+        'source': {
+            'dataset': 'paris',
+            'id_ext': elem.get('fields', {}).get('stationcode')
+        },
+        'tpe': True if elem.get('fields',{}).get('is_renting') == 'OUI' else False,
     }
-    records.insert_one(new_station)
+    for elem in vlilles
+]
+
+for vlille in vlilles_to_insert:
+    records.insert_one(vlille)

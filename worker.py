@@ -15,9 +15,13 @@ def get_wifiparis():
 
     return response_json.get("records", [])
 
-client = MongoClient()
-client = MongoClient('mongodb+srv://rtatin:<bgbogoss>@cluster0.ovsvo.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority')
-db=client["worker"]
+client= MongoClient("mongodb+srv://dbUser:admin@cluster0.tpotb.mongodb.net/mongo_Test?retryWrites=true&w=majority")
+db=client.get_database('mongo_Test')
+records=db.test
+
+##client = MongoClient()
+##client = MongoClient('mongodb+srv://rtatin:<bgbogoss>@cluster0.ovsvo.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority')
+##db=client["worker"]
 mycol = db["wifi"]
 wifis = get_wifiparis()
 mongo_id = mycol.insert(wifis)

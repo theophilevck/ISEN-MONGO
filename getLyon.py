@@ -24,11 +24,25 @@ def get_vlyon():
 
 vlilles = get_vlyon()
 
-for vlille in vlilles:
-    new_station={
-        'name':vlille['name'],
-        'ville':vlille['contractName'],
-        'localisation':[vlille['position']],
-        'tpe':vlille['banking']
+vlilles_to_insert =[
+ {
+        'name': elem.get('nom', '').title(),
+        'geometry': {
+            "type": "Point",
+            "coordinates": [
+                elem.get('position',{}).get('longitude'),
+                elem.get('position',{}).get('latitude')
+            ]
+        },
+        'size': elem.get('mainStands', {}).get('availabilities',{}).get('bikes') + elem.get('mainStands', {}).get('availabilities',{}).get('stands'),
+        'source': {
+            'dataset': 'lyon',
+            'id_ext': elem.get('number')
+        },
+        'tpe': elem.get('banking', '') == 'AVEC TPE'
     }
-    records.insert_one(new_station)
+    for elem in vlilles
+]
+
+for vlille in vlilles_to_insert:
+    records.insert_one(vlille)

@@ -24,13 +24,21 @@ def get_vlille():
 
 vlilles = get_vlille()
 
-for vlille in vlilles:
-    new_station={
-        'name':vlille['fields']['nom'],
-        'ville':vlille['fields']['commune'],
-        'localisation':vlille['fields']['localisation'],
-        'tpe':vlille['fields']['type']
+vlilles_to_insert =[
+ {
+        'name': elem.get('fields', {}).get('nom', '').title(),
+        'geometry': elem.get('geometry'),
+        'size': elem.get('fields', {}).get('nbvelosdispo') + elem.get('fields', {}).get('nbplacesdispo'),
+        'source': {
+            'dataset': 'Lille',
+            'id_ext': elem.get('fields', {}).get('libelle')
+        },
+        'tpe': elem.get('fields', {}).get('type', '') == 'AVEC TPE'
     }
-    records.insert_one(new_station)
+    for elem in vlilles
+]
+
+for vlille in vlilles_to_insert:
+    records.insert_one(vlille)
     
     
