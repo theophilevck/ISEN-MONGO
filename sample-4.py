@@ -68,10 +68,37 @@ def delete_station_Data(id):
         {"station_id":id}
     )
 
+def update_boolean_activate_station():
+    {
+        db.mongo_record.update_many(
+            {},
+            {"$set": {"activate":True}},upsert=False, array_filters=None)
+    }
 
-toUpdate = []
-toUpdate=getByname("flandre")
-pprint(toUpdate)
+    
+def query_polygone(x0,x1,x2,x3,state):
+    db.mongo_record.update_many(
+        {"geometry": {
+            "$geoWithin": 
+                { 
+                    "$polygon": [ [ x0[0] , x0[1] ], [ x1[0] , x1[1]], [ x2[0] , x2[1] ],[x3[0] , x3[1]] ] 
+                }
+            }
+        },
+        {"$set": {"activate":state}})
+
+
+x0=[3.048082,50.650289]
+x1=[3.024833,50.621240]
+x2=[3.086996,50.617326]
+x3=[3.070742,50.651181]
+##query_polygone(x0,x1,x2,x3,True)
+
+
+
+
+##update_boolean_activate_station()
+
 ##delete_station_Data(toUpdate[0][0].get('_id'))
 ##update_Stations(toUpdate[0][0].get('_id'),"Seine - Flandre")
 
