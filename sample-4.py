@@ -51,20 +51,28 @@ def get_standbyid(id):
 
 
 def update_Stations_Name(id,newName):
+    try:
+        db.mongo_record.update(
+        {"_id":id},
+        {"$set": {'name':newName}})
+    except :
+        pprint("error update")
+        pass
 
-    db.mongo_record.update(
-    {"_id":id},
-    {"$set": {'name':newName}})
+
+def delete_station_Data(id):
+    db.mongo_record.delete_one(
+        {"_id":id}
+    )
+    db.test.delete_one(
+        {"station_id":id}
+    )
 
 
 toUpdate = []
-toUpdate=getByname("test")
-##pprint(toUpdate)
-##station=toUpdate[0]
-
-
-pprint(getByname("test"))
-
+toUpdate=getByname("flandre")
+pprint(toUpdate)
+##delete_station_Data(toUpdate[0][0].get('_id'))
 ##update_Stations(toUpdate[0][0].get('_id'),"Seine - Flandre")
 
 
