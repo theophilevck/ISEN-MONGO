@@ -4,6 +4,7 @@ from pprint import pprint
 from pymongo import MongoClient
 import time
 import dateutil.parser
+from bson.objectid import ObjectId
 
 client= MongoClient("mongodb+srv://dbUser:admin@cluster0.tpotb.mongodb.net/mongo_Test?retryWrites=true&w=majority")
 db=client.get_database('mongo_Test')
@@ -27,7 +28,7 @@ def getByname(nom):
                     "coordinates":station.get('geometry',{}).get('coordinates'),
                     "bike":get_bikebyid(station.get('_id')),
                     "stand":get_standbyid(station.get('_id')),
-                    "_id":station.get('station_id')
+                    "_id":station.get('_id')
                     }
                 ]
         nearstation.append(datas)
@@ -39,7 +40,7 @@ def get_bikebyid(id):
         return tps['bike_availbale']
     except :
         return -1
-    
+
 
 def get_standbyid(id):
     try:
@@ -48,4 +49,23 @@ def get_standbyid(id):
     except :
         return -1
 
-pprint(getByname("Flandre"))
+
+def update_Stations_Name(id,newName):
+
+    db.mongo_record.update(
+    {"_id":id},
+    {"$set": {'name':newName}})
+
+
+toUpdate = []
+toUpdate=getByname("test")
+##pprint(toUpdate)
+##station=toUpdate[0]
+
+
+pprint(getByname("test"))
+
+##update_Stations(toUpdate[0][0].get('_id'),"Seine - Flandre")
+
+
+
