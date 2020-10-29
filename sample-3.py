@@ -10,7 +10,7 @@ db=client.get_database('mongo_Test')
 bdd=db.test
 
 def getStationNear(longitude,latitude, distance):
-    ##db.mongo_record.create_index([("geometry", "2dsphere")])
+    db.mongo_record.create_index([("geometry", "2dsphere")])
     stations=db.mongo_record.find(
         {
         "geometry": {

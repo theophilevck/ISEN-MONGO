@@ -117,6 +117,4 @@ while True:
     station=update_stations()
     for vlille in station:
         bdd.insert_many(vlille)
-        
-        
-    time.sleep(1)
+    
